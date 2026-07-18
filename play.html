@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm 4 Music - Player</title>
+    <style>
+        /* Target the exact DaFont filename for the alternate font */
+        @font-face {
+            font-family: 'Minecrafter Alt';
+            src: url('MineCrafter_Alt.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('https://i.pinimg.com/736x/b4/98/ab/b498ab2bce098940cc1fe7664ce5c482.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Minecrafter Alt', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .player-container {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 15px 30px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 1.8rem;
+        }
+
+        .play-btn {
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid #ffffff;
+            background: transparent;
+            border-right: none;
+            cursor: pointer;
+            margin-right: 25px;
+            padding: 0;
+        }
+
+        .play-btn.playing {
+            width: 20px;
+            height: 25px;
+            border: double #ffffff;
+            border-width: 0px 6px 0px 6px;
+            margin-right: 25px;
+        }
+
+        .play-btn:focus {
+            outline: none;
+        }
+
+        .time-display {
+            letter-spacing: 4px; /* Increased spacing to stop character overlapping */
+            text-shadow: 2px 2px 0px #000;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="player-container">
+        <button class="play-btn" id="audioControlBtn" onclick="toggleAudio()"></button>
+        <div class="time-display" id="timeTrack">00:00:00</div>
+    </div>
+
+    <audio id="calm4Audio" src="calm4 mp3.mp3"></audio>
+
+    <script>
+        const audio = document.getElementById('calm4Audio');
+        const button = document.getElementById('audioControlBtn');
+        const timer = document.getElementById('timeTrack');
+
+        // Fixed the syntax error here!
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                button.classList.add('playing');
+            } else {
+                audio.pause();
+                button.classList.remove('playing');
+            }
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            let current = Math.floor(audio.currentTime);
+            let hrs = Math.floor(current / 3600);
+            let mins = Math.floor((current % 3600) / 60);
+            let secs = current % 60;
+
+            let formattedTime = 
+                String(hrs).padStart(2, '0') + ':' +
+                String(mins).padStart(2, '0') + ':' +
+                String(secs).padStart(2, '0');
+
+            timer.textContent = formattedTime;
+        });
+
+        audio.addEventListener('ended', () => {
+            button.classList.remove('playing');
+            timer.textContent = "00:00:00";
+        });
+    </script>
+</body>
+</html>
